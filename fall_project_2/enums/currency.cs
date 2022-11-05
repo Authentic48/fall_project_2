@@ -1,9 +1,9 @@
 namespace fall_project_2.enums;
 
-public enum currencyEnum
+public enum Currency
 {
-    USD,
-    EUR,
-    RUB, 
-    GBP
+    Usd,
+    Eur,
+    Rub,
+    Gbp
 }

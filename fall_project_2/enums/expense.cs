@@ -1,14 +1,13 @@
 namespace fall_project_2.enums;
 
-public enum ExpenseEnum
+public enum ExpenseType
 {
     Food,
     Restaurants,
-    Medecine,
+    Medicines,
     Sport,
     Transport,
     Rent,
     Investments,
-    Entertainment, 
-    
+    Entertainment,
 }

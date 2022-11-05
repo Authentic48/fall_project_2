@@ -4,182 +4,182 @@ namespace fall_project_2;
 
 // TODO Iheritance  IEquatable<Money> and IComparable<Money>
 public class Money //: IEquatable<Money>, IComparable<Money>
-  {
-    private Random random = new Random();
+{
+    private readonly Random _random = new Random();
 
-    private currencyEnum currencies; 
+    private readonly Currency _currencies;
 
-    private ulong integer;
-    private ushort fraction;
+    private ulong _integer;
+    private ushort _fraction;
 
-    private char sign;
+    private char _sign;
 
-    private string currency;
+    private string _currency;
 
     public ulong GetInteger()
     {
 
-      return this.integer; // AM1
+        return this._integer; // AM1
     }
 
     public char GetSign()
     {
-      return this.sign; // AM2
+        return this._sign; // AM2
     }
     public ushort GetFraction()
     {
-      return this.fraction; // AM3
+        return this._fraction; // AM3
     }
 
-    public void addToFraction()
+    public void AddToFraction()
     {
-      this.integer += (ushort)(this.fraction / 100);
-      this.fraction = (ushort)(this.fraction % 100);
+        this._integer += (ushort)(this._fraction / 100);
+        this._fraction = (ushort)(this._fraction % 100);
     }
 
     public void DisplayToConsole()
     {
-      Console.WriteLine("{0}.{1}", this.integer, this.fraction); // MD
+        Console.WriteLine($"{_integer}.{_fraction}"); // MD
     }
     public void SetInteger(ulong value)
     {
-      integer = value; // MS1
+        _integer = value; // MS1
     }
     public void SetFraction(ushort value)
     {
-      fraction = value; // MS2
+        _fraction = value; // MS2
     }
 
     public void SetSign(char sign) // MS3
     {
-      this.sign = sign;
+        this._sign = sign;
     }
 
     public Money() //  C1
     {
-      this.integer = (ulong)random.Next(1, 112) - 4;
-      this.fraction = (ushort)(random.Next(1, 156) * random.Next(3, 7));
-      // this.currency = currencies[random.Next(currencies.Count)];
+        this._integer = (ulong)_random.Next(1, 112) - 4;
+        this._fraction = (ushort)(_random.Next(1, 156) * _random.Next(3, 7));
+        // this.currency = currencies[random.Next(currencies.Count)];
     }
 
     public Money(ushort fraction, ulong integer, string currency, char sign) // C2
     {
-      this.fraction = fraction;
-      this.integer = integer;
-      this.currency = currency;
-      this.sign = sign;
+        this._fraction = fraction;
+        this._integer = integer;
+        this._currency = currency;
+        this._sign = sign;
     }
     public Money(Money money) // C3
     {
-      this.integer = money.integer;
-      this.fraction = money.fraction;
-      this.currency = money.currency;
-      this.sign = money.sign;
+        this._integer = money._integer;
+        this._fraction = money._fraction;
+        this._currency = money._currency;
+        this._sign = money._sign;
     }
 
     public Money(string money) // C4
     {
-      String[] newValue = money.Split('.');
-      this.integer = Convert.ToUInt64(newValue[0]);
-      this.fraction = Convert.ToUInt16(newValue[1]);
-      this.sign = getSignOfNumber(money);
+        String[] newValue = money.Split('.');
+        this._integer = Convert.ToUInt64(newValue[0]);
+        this._fraction = Convert.ToUInt16(newValue[1]);
+        this._sign = GetSignOfNumber(money);
 
     }
 
-    public char getSignOfNumber(string number)
+    public char GetSignOfNumber(string number)
     {
-      if (number[0] == '-')
-      {
-        return '-';
-      }
+        if (number[0] == '-')
+        {
+            return '-';
+        }
 
-      return '+';
+        return '+';
     }
 
     public void Addition(ulong integer, ushort fraction, char sign)  // MAdd1
     {
-      this.integer += integer;
-      this.fraction += fraction;
-      if (this.integer < integer)
-      {
-        this.sign = sign;
-      }
+        this._integer += integer;
+        this._fraction += fraction;
+        if (this._integer < integer)
+        {
+            this._sign = sign;
+        }
     }
 
     public void Addition2(Money money)   // MAdd2
     {
-      this.integer += money.integer;
-      this.fraction += money.fraction;
-      if (this.integer < money.integer)
-      {
-        this.sign = money.sign;
-      }
+        this._integer += money._integer;
+        this._fraction += money._fraction;
+        if (this._integer < money._integer)
+        {
+            this._sign = money._sign;
+        }
     }
 
-    public bool checkSubtraction(ulong integer, ushort fraction)
+    public bool CheckSubtraction(ulong integer, ushort fraction)
     {
-      if (this.integer < integer)
-      {
-        return false;
-      }
-      else if (this.integer == integer)
-      {
-        if (this.fraction < fraction)
+        if (this._integer < integer)
         {
-          return false;
+            return false;
         }
-      }
-      return true;
+        else if (this._integer == integer)
+        {
+            if (this._fraction < fraction)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
 
     public void Subtraction(ulong integer, ushort fraction)   // MSub1
     {
-      if (checkSubtraction(integer, fraction))
-      {
+        if (CheckSubtraction(integer, fraction))
+        {
 
-        this.integer -= integer;
-        this.fraction -= fraction;
-        addToFraction();
-      }
-      else
-        Console.WriteLine("We can't perform a substruction");
+            this._integer -= integer;
+            this._fraction -= fraction;
+            AddToFraction();
+        }
+        else
+            Console.WriteLine("We can't perform a substruction");
     }
 
     public void Subtraction2(Money obj)       //  MSub2
     {
-      if (checkSubtraction(obj.integer, obj.fraction))
-      {
+        if (CheckSubtraction(obj._integer, obj._fraction))
+        {
 
-        this.integer -= obj.integer;
-        this.fraction -= obj.fraction;
-        addToFraction();
-      }
-      else
-        Console.WriteLine("We can't perform a substruction");
+            this._integer -= obj._integer;
+            this._fraction -= obj._fraction;
+            AddToFraction();
+        }
+        else
+            Console.WriteLine("We can't perform a substruction");
     }
 
 
     public bool MoneyEqual(Money money)    //  MEq
     {
-      if (money.integer.Equals(this.integer) && money.fraction.Equals(this.fraction) && money.currency.Equals(this.currency) && money.sign.Equals(this.sign))
-      {
-        return true;
-      }
-      return false;
+        if (money._integer.Equals(this._integer) && money._fraction.Equals(this._fraction) && money._currency.Equals(this._currency) && money._sign.Equals(this._sign))
+        {
+            return true;
+        }
+        return false;
     }
 
     public int MoneyCompare(Money money)     // MComp
     {
-      // TODO
-      return 1;
+        // TODO
+        return 1;
     }
 
-    public void convertMoney(Money money)
+    public void ConvertMoney(Money money)
     {
-      this.integer *= money.integer;
-      this.fraction *= money.fraction;
-      this.currency = money.currency;
+        this._integer *= money._integer;
+        this._fraction *= money._fraction;
+        this._currency = money._currency;
     }
 
-  }
+}

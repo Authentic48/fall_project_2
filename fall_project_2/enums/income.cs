@@ -1,6 +1,6 @@
 namespace fall_project_2.enums;
 
-public enum IncomeEnum
+public enum IncomeType
 {
     Salary,
     StudentGrant

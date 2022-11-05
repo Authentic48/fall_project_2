@@ -1,14 +1,19 @@
-namespace fall_project_2;
- 
 
-public class wallet
+namespace fall_project_2;
+
+public class Wallet
 {
-    public string name;
-    
+    public Wallet(string name)
+    {
+        Name = name;
+    }
+
+    public string Name { get; }
+
     // TODO Return type
-    public void addOperation(Income op){}
-    
-    public void addOperation(Expense op){}
-    
-    public void collectStatistic(DateTime from, DateTime to){}
+    public void AddOperation(Income op) { }
+
+    public void AddOperation(Expense op) { }
+
+    public void CollectStatistic(DateTime from, DateTime to) { }
 }
