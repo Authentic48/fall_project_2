@@ -5,9 +5,11 @@ namespace fall_project_2;
 
 public class Wallet
 {
-    public Wallet(string name)
+    public Wallet(string name, Currency currency, Money amount)
     {
         Name = name;
+        Currency = currency;
+        Amount = amount;
     }
 
     public string Name { get; }
@@ -18,10 +20,16 @@ public class Wallet
 
     public Money Amount { get; }
 
-    // TODO Return type
-    public void AddOperation(Income op) { }
+    public void AddOperation(Income operation)
+    {
+        Operations.Add(operation);
+    }
 
-    public void AddOperation(Expense op) { }
+    public void AddOperation(Expense operation)
+    {
+        Operations.Add(operation);
+    }
 
     public void CollectStatistic(DateTime from, DateTime to) { }
+    
 }
