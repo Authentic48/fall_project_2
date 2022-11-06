@@ -7,5 +7,5 @@ public class User
 
     public string Email { get; }
 
-    public string Password { get; }
+    public List<Wallet> Wallets { get; }
 }
