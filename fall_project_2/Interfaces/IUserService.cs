@@ -1,4 +1,4 @@
-namespace fall_project_2.interfaces;
+namespace fall_project_2.Interfaces;
 
 public interface IUserService
 {

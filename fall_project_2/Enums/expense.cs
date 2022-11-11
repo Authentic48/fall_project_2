@@ -1,4 +1,4 @@
-namespace fall_project_2.enums;
+namespace fall_project_2.Enums;
 
 public enum ExpenseType
 {

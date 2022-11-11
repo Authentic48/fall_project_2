@@ -1,17 +1,17 @@
-using fall_project_2.enums;
+using fall_project_2.Enums;
 
 namespace fall_project_2;
 
 public sealed class Money
 {
 
-    private ulong _integer;
+    private readonly ulong _integer;
     public ulong Integer => _integer;
 
-    private ushort _fraction;
+    private readonly ushort _fraction;
     public ushort Fraction => _fraction;
 
-    private char _sign;
+    private readonly char _sign;
     public Char Sign => _sign;
 
     public Currency Currency { get; }

@@ -1,6 +1,6 @@
-using fall_project_2.enums;
+using fall_project_2.Enums;
 
-namespace fall_project_2.interfaces;
+namespace fall_project_2.Interfaces;
 
 public interface IWalletService
 {
