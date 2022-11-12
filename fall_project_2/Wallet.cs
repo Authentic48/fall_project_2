@@ -31,5 +31,15 @@ public class Wallet
     }
 
     public void CollectStatistic(DateTime from, DateTime to) { }
+
+    (String, String) createWallet()
+    {
+        var currency = Console.ReadLine();
+        var amount = Console.ReadLine();
+
+        return (currency, amount);
+    }
+    
+    
     
 }
