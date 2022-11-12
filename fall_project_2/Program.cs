@@ -18,3 +18,27 @@ switch (Console.ReadLine())
         Console.WriteLine("GoodBye!");
         break;
 }
+
+static (String, String) CreateWallet()
+{
+    var currency = Console.ReadLine();
+    var amount = Console.ReadLine();
+
+    return (currency, amount);
+}
+
+static (String, String) Login()
+{
+    var email = Console.ReadLine();
+    var password = Console.ReadLine();
+    return (email, password);
+}
+
+static (String, String, String) Register()
+{
+    var name = Console.ReadLine();
+    var email = Console.ReadLine();
+    var password = Console.ReadLine();
+
+    return (name, email, password);
+}

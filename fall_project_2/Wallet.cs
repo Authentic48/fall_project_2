@@ -61,18 +61,6 @@ public class Wallet
             })
             .ToArray();
 
-    public void CollectStatistic(DateTime from, DateTime to) { }
-
-    (String, String) createWallet()
-    {
-        var currency = Console.ReadLine();
-        var amount = Console.ReadLine();
-
-        return (currency, amount);
-    }
-
-
-
         // TODO: build string to print operations aggregates
     }
 
