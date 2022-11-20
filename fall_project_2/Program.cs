@@ -202,6 +202,7 @@ internal class Program
 
                 switch (Console.ReadLine())
                 {
+                    // grey loop
                     case "1":
                         Console.WriteLine("Create Wallet Menu Selected");
 
@@ -223,6 +224,31 @@ internal class Program
                 }
 
             } while (isAuthenticated);
+        }
+
+
+        static void ShowCreateWallet()
+        {
+            hasErrored = false;
+            do
+            {
+                try
+                {
+                    var input = CreateWallet();
+
+                    // TODO: 1. create wallet object
+                    // TODO: 2. save wallet object to database
+
+                    // TODO: 3. return to orange
+                }
+                catch (Exception exception)
+                {
+                    Console.Error.WriteLine($"Unable to create wallet: {exception.Message}");
+                    Console.WriteLine();
+
+                    hasErrored = true;
+                }
+            } while (hasErrored);
         }
     }
 }
