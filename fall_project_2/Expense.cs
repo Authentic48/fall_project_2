@@ -7,7 +7,8 @@ public class Expense : Operation
     public ExpenseType Type { get; set; }
 
 
-    public Expense(Money value, DateTime date) : base(value, date)
+    public Expense(Money value, DateTime date, ExpenseType type) : base(value, date)
     {
+        Type = type;
     }
 }

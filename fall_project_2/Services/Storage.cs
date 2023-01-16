@@ -46,6 +46,7 @@ public class Storage : IDisposable
 
         return user;
     }
+    
 
     public async Task<User> Login(string email, string password)
     {
@@ -83,10 +84,24 @@ public class Storage : IDisposable
         s_activeWallet = wallets.FirstOrDefault(w => w.Id == wallet.Id);
     }
 
-    public /* async Task */ void SetActiveUser(User user)
+    public  void SetActiveUser(User user)
     {
         s_activeUser = user;
     }
+
+    public async Task<Wallet> FindWallet(string name)
+    {
+        var wallets = await this.GetUserWallets();
+        var wallet = wallets.FirstOrDefault(w => w.Name == name);
+
+        if (wallet is null)
+        {
+            throw new Exception("Wallet Not Found!");
+        }
+        
+        return wallet;
+    }
+    
 
     public async Task CreateWallet(string name, Currency currency, Money amount)
     {
@@ -112,12 +127,34 @@ public class Storage : IDisposable
         s_activeWallet = null;
     }
 
-    public async Task AddOperation(Operation operation)
+    public async Task AddIncomeOperation(string amount, DateTime date, IncomeType type)
     {
         if (ActiveWallet is null)
         {
             return;
         }
+
+        var money = new Money(amount, ActiveWallet.Currency);
+
+        var operation = new Income(money, date, type);
+
+        ActiveWallet.Operations.Add(operation);
+        // Tell EF that a new item to operation collection is added so that the SaveChanges call
+        // perform the necessary update.
+        this._context.Entry(ActiveWallet).Collection(w => w.Operations).IsModified = true;
+        await this._context.SaveChangesAsync();
+    }
+    
+    public async Task AddExpenseOperation(string amount, DateTime date, ExpenseType type)
+    {
+        if (ActiveWallet is null)
+        {
+            return;
+        }
+
+        var money = new Money(amount, ActiveWallet.Currency);
+
+        var operation = new Expense(money, date, type);
 
         ActiveWallet.Operations.Add(operation);
         // Tell EF that a new item to operation collection is added so that the SaveChanges call

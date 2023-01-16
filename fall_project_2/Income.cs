@@ -6,7 +6,8 @@ public class Income : Operation
 {
     public IncomeType Type { get; set; }
 
-    public Income(Money value, DateTime date) : base(value, date)
+    public Income(Money value, DateTime date, IncomeType type) : base(value, date)
     {
+        Type = type;
     }
 }

@@ -180,19 +180,7 @@ internal class Program
         Console.Write($"Enter ({email}) password: ");
         return ReadPassword();
     }
-
-    static (string amount, string date, string category) AddOperation()
-    {
-        Console.Write("Please enter your amount: ");
-        var amount = Console.ReadLine();
-        Console.Write("Please enter your date: ");
-        var date = Console.ReadLine();
-        Console.Write("Choose your category: ");
-        var category = Console.ReadLine();
-
-        return (amount, date, category);
-    }
-
+    
     static string ChooseWallet()
     {
         Console.Write("Please enter your wallet name: ");
@@ -222,13 +210,12 @@ internal class Program
                     break;
                 case "2":
                     Console.WriteLine("Choose Wallet Menu Selected");
-                    // TODO: 1. ask user to choose wallet
-                    // TODO: 2. set selected wallet as Active Wallet
-                    ShowWalletMainMenu();
+                    await ShowChooseWallet();
+                    await ShowWalletMainMenu();
                     break;
                 case "3":
                     Console.WriteLine("Delete Wallet Menu Selected");
-
+                    await ShowDeleteWallet();
                     break;
 
                 case "4":
@@ -268,25 +255,65 @@ internal class Program
         } while (hasErrored);
     }
 
-    static void ShowChooseWallet()
+    static async Task  ShowChooseWallet()
     {
-        // TODO: 1. Fetch and show user wallet list by name
-        // TODO: 2. Read user selection and set it as active wallet
-        //          call Storage.SetActiveWallet
+        hasErrored = false;
+        do
+        {
+            try
+            {
+                //  Fetch and show user wallet list by name
+                var wallets = await storage.GetUserWallets();
+                foreach (Wallet w in wallets)
+                {
+                    Console.WriteLine("name: ", w.Name);
+                }
+
+                //  Read user selection and set it as active wallet
+                var name = ChooseWallet();
+
+                var wallet = await storage.FindWallet(name);
+
+                //  call Storage.SetActiveWallet
+                await storage.SetActiveWallet(wallet);
+            }
+            catch (Exception exception)
+            {
+                Console.Error.WriteLine($"Something went wrong: {exception.Message}");
+                Console.WriteLine();
+
+                hasErrored = true;
+            }
+        } while (hasErrored);
+        
     }
 
-    static void ShowDeleteWallet()
+    static async Task ShowDeleteWallet()
     {
-        // TODO: 1. call Storage.DeleteWallet()
-        // TODO: 2. Prompt user to select new active wallet
+        hasErrored = false;
+        do
+        {
+            try
+            {
+                //  call Storage.DeleteWallet()
+                await storage.DeleteWallet();
+                
+                //  Prompt user to select new active wallet
+                await ShowChooseWallet();
+
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine($"Something went wrong: {exception.Message}");
+                Console.WriteLine();
+
+                hasErrored = true;
+            }
+        } while (hasErrored);
     }
+    
 
-    static void LogOut()
-    {
-
-    }
-
-    static void ShowWalletMainMenu()
+    static async Task ShowWalletMainMenu()
     {
         // We have an active wallet selection
 
@@ -306,16 +333,25 @@ internal class Program
             {
                 // grey loop
                 case "1":
-                    Console.WriteLine("Add Operation");
-                    // TODO: 1. ask user for operation type
-                    // TODO: 2. build operation object
-                    // TODO: 3. call Storage.AddOperation
+                    Console.WriteLine("Add Income Operation");
+                    var operationType = ChooseIncomeType();
+                
+                    var input = AddOperationAmount();
+                    
+                    await storage.AddIncomeOperation(input.amount, input.date, operationType);
+                    
+                    break;
+                case "2":
+                    Console.WriteLine("Add Expense Operation");
+                    var type = ChooseExpenseType();
+                
+                    var data = AddOperationAmount();
 
+                    await storage.AddExpenseOperation(data.amount, data.date, type);
                     break;
                 case "3":
                     Console.WriteLine("Delete Wallet");
-                    // TODO: 1. call Storage.DeleteWallet
-                    // TODO: 2. return to previous menu
+                    await ShowDeleteWallet();
                     return;
 
                 case "4":
@@ -332,11 +368,38 @@ internal class Program
         } while (isAuthenticated);
     }
 
-    static Operation CreateWalletOperation()
+    static IncomeType ChooseIncomeType()
     {
-        // TODO: 1. ask user for category
-        // TODO: 2. ask user for operation money amount
-        // TODO: 3. build operation object
-        return null;
+        Console.WriteLine("Choose income type:  ");
+        
+        foreach (IncomeType incomeType in Enum.GetValues(typeof(IncomeType)))
+        {
+            Console.WriteLine(incomeType);
+        }
+        var input = Console.ReadLine();
+
+        return (IncomeType)Enum.Parse(typeof(ExpenseType), input);
+    }
+    
+    static ExpenseType ChooseExpenseType()
+    {
+        Console.WriteLine("Choose expense type:  ");
+        foreach (ExpenseType expenType in Enum.GetValues(typeof(ExpenseType)))
+        {
+            Console.WriteLine(expenType);
+        }
+        var input = Console.ReadLine();
+
+        return (ExpenseType)Enum.Parse(typeof(ExpenseType), input);
+    }
+    
+    static (string amount, DateTime date) AddOperationAmount()
+    {
+        Console.Write("Please enter your amount: ");
+        var amount = Console.ReadLine();
+        Console.Write("Please enter your date: ");
+        var date = Console.ReadLine();
+        
+        return (amount, DateTime.Parse(date!));
     }
 }

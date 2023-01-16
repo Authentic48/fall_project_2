@@ -23,4 +23,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.10" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Storage.cs" />
+  </ItemGroup>
+
 </Project>
